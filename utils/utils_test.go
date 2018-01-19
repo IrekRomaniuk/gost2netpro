@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	user = flag.String("u", "", "user")
-	pass = flag.String("p", "", "pass")
+	user = flag.String("u", "user", "user")
+	pass = flag.String("p", "pass", "pass")
 	api  = flag.String("api", "", "api")
 	cmd  = flag.String("cmd", "uptime", "cmd")
 )
@@ -29,9 +29,9 @@ func TestReadFile(t *testing.T) {
 func TestPostPage(t *testing.T) {
 	list := Netpro{Hosts: "1.1.1.1, 2.2.2.2", User: *user, Pass: *pass, Cmd: *cmd}
 	fmt.Printf("List: %v\n", list)
-	ID, err := PostPage("https://ubuntu-st2/api/v1/webhooks/netpro", *api, list)
+	cmd, err := PostPage("https://ubuntu-st2/api/v1/webhooks/netpro", *api, list)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("ID: %v\n", ID)
+	fmt.Printf("cmd: %v\n", cmd)
 }
