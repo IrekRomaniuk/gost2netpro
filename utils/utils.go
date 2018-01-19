@@ -22,7 +22,7 @@ type Netpro struct {
 }
 
 //Hosts creates output slice of targets
-func (list *Netpro) ReadFile(hosts string) error {
+func (list *Netpro) ReadFile(hosts, user, pass, cmd string) error {
 
 	lines, err := readHosts(hosts)
 
@@ -30,7 +30,8 @@ func (list *Netpro) ReadFile(hosts string) error {
 		//fmt.Println("Error reading file", hosts)
 		return errors.New("Error reading file")
 	} else {
-		*list = Netpro{Hosts: strings.Join(deletempty(lines), ",")}
+		*list = Netpro{Hosts: strings.Join(deletempty(lines), ","), User: user, 
+			Pass: pass, Cmd: cmd}
 	}
 	return nil
 }

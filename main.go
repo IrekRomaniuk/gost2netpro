@@ -3,9 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
-	"github.com/IrekRomaniuk/pingnet/utils"
+	"github.com/IrekRomaniuk/gost2netpro/utils"
 )
 
 var (
@@ -13,8 +14,14 @@ var (
 	URL = flag.String("url", "https://ubuntu-st2/api/v1/webhooks/netpro", "st2 webhook")
 	//API of st2
 	API = flag.String("api", "", "st2 api key")
-	//FILE is object group where IP list is included
-	HOSTS   = flag.String("f", "./targets/pinglist.txt", "file to read targets from")
+	//FILE with list of remote targets
+	HOSTS = flag.String("a", "./targets/pinglist.txt", "file to read targets from")
+	//USER
+	USER = flag.String("u", "user", "target username")
+	//PASS
+	PASS = flag.String("p", "pass", "target password")
+	//CMD to run
+	CMD     = flag.String("c", "uptime", "cmd to run on targets")
 	version = flag.Bool("v", false, "Prints current version")
 	// Version : Program version
 	Version = "No Version Provided"
@@ -36,14 +43,14 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Reading file: ", *HOSTS)
-	hosts, err := utils.Hosts(*HOSTS)
-
+	list := &utils.Netpro{Hosts: "", User: *USER, Pass: *PASS, Cmd: *CMD}
+	err := list.ReadFile(*HOSTS, *USER, *PASS, *CMD)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
-
-	fmt.Println(hosts)
-
+	cmd, err := utils.PostPage(*URL, *API, list)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("cmd: %v\n", cmd)
 }

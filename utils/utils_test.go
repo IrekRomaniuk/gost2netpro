@@ -16,16 +16,16 @@ var (
 
 //TestReadFile  : go test -run TestReadFile
 func TestReadFile(t *testing.T) {
-	list := &Netpro{Hosts: ""}
+	list := &Netpro{Hosts: "", User: *user, Pass: *pass, Cmd: *cmd}
 	//fmt.Printf("List name: %v\n", list.Name)
-	err := list.ReadFile("../targets/pinglist.txt")
+	err := list.ReadFile("../targets/pinglist.txt", *user, *pass, *cmd)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("netpro: %v\n", *list)
 }
 
-//TestPostPage : go test -run TestPostPage -args -u=user -p=pass
+//TestPostPage : go test -run TestPostPage -args -u=user -p=pass -api=''
 func TestPostPage(t *testing.T) {
 	list := Netpro{Hosts: "1.1.1.1, 2.2.2.2", User: *user, Pass: *pass, Cmd: *cmd}
 	fmt.Printf("List: %v\n", list)
