@@ -34,3 +34,7 @@ parameters:
   username: user
 result: None
 ```
+
+```
+gost2netpro -api='' -u=user -p='password' -a="./list.txt"
+```
